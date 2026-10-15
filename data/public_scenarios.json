@@ -1,0 +1,38 @@
+[
+  {
+    "scenario_id": "success_tensile",
+    "category": "success",
+    "request": {"authenticated_user_id": "alice", "text": "Reserve tensile-01 for polymer-study from 2026-10-15 10:00 to 11:00.", "project_id": "polymer-study", "resource_id": "tensile-01", "start": "2026-10-15T10:00:00", "end": "2026-10-15T11:00:00"},
+    "expected_status": "completed"
+  },
+  {
+    "scenario_id": "missing_laser_training",
+    "category": "missing_qualification",
+    "request": {"authenticated_user_id": "bob", "text": "Reserve laser-01 for polymer-study from 2026-10-15 10:00 to 11:00.", "project_id": "polymer-study", "resource_id": "laser-01", "start": "2026-10-15T10:00:00", "end": "2026-10-15T11:00:00"},
+    "expected_status": "blocked"
+  },
+  {
+    "scenario_id": "expired_robot_calibration",
+    "category": "resource_status",
+    "request": {"authenticated_user_id": "carol", "text": "Reserve robot-01 for robotics-demo from 2026-10-15 10:00 to 11:00.", "project_id": "robotics-demo", "resource_id": "robot-01", "start": "2026-10-15T10:00:00", "end": "2026-10-15T11:00:00"},
+    "expected_status": "blocked"
+  },
+  {
+    "scenario_id": "after_hours_missing",
+    "category": "approval",
+    "request": {"authenticated_user_id": "bob", "text": "Reserve tensile-01 for polymer-study from 2026-10-15 19:00 to 20:00.", "project_id": "polymer-study", "resource_id": "tensile-01", "start": "2026-10-15T19:00:00", "end": "2026-10-15T20:00:00"},
+    "expected_status": "blocked"
+  },
+  {
+    "scenario_id": "ambiguous_time",
+    "category": "clarification",
+    "request": {"authenticated_user_id": "alice", "text": "Reserve the tensile tester tomorrow afternoon for polymer-study."},
+    "expected_status": "clarification_required"
+  },
+  {
+    "scenario_id": "conflict",
+    "category": "tool_failure",
+    "request": {"authenticated_user_id": "alice", "text": "Reserve tensile-01 for polymer-study from 2026-10-15 13:30 to 14:30.", "project_id": "polymer-study", "resource_id": "tensile-01", "start": "2026-10-15T13:30:00", "end": "2026-10-15T14:30:00"},
+    "expected_status": "blocked"
+  }
+]

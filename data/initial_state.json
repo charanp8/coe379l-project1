@@ -1,0 +1,49 @@
+{
+  "users": {
+    "alice": {
+      "qualifications": ["lab_safety", "laser_safety"],
+      "projects": ["polymer-study"],
+      "approvals": [
+        {"kind": "after_hours", "start": "2026-10-15T18:00:00", "end": "2026-10-15T22:00:00"}
+      ]
+    },
+    "bob": {
+      "qualifications": ["lab_safety"],
+      "projects": ["polymer-study"],
+      "approvals": []
+    },
+    "carol": {
+      "qualifications": ["robotics_level_2"],
+      "projects": ["robotics-demo"],
+      "approvals": []
+    }
+  },
+  "resources": {
+    "tensile-01": {
+      "kind": "tensile_tester",
+      "calibration_expires": "2026-12-31T23:59:59",
+      "maintenance": false
+    },
+    "laser-01": {
+      "kind": "laser_cutter",
+      "calibration_expires": "2026-12-31T23:59:59",
+      "maintenance": false
+    },
+    "robot-01": {
+      "kind": "robotic_cell",
+      "calibration_expires": "2026-09-30T23:59:59",
+      "maintenance": false
+    }
+  },
+  "reservations": [
+    {
+      "reservation_id": "r-existing",
+      "user_id": "alice",
+      "project_id": "polymer-study",
+      "resource_id": "tensile-01",
+      "start": "2026-10-15T13:00:00",
+      "end": "2026-10-15T14:00:00",
+      "status": "confirmed"
+    }
+  ]
+}

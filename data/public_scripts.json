@@ -1,0 +1,36 @@
+{
+  "success_tensile": [
+    {"kind": "tool_call", "tool": "search_lab_documents", "arguments": {"query": "tensile tester lab_safety authorization calibration", "top_k": 8}, "reasoning_summary": "Retrieve applicable policy."},
+    {"kind": "tool_call", "tool": "get_user_authorizations", "arguments": {"user_id": "alice"}, "reasoning_summary": "Check qualifications and project authorization."},
+    {"kind": "tool_call", "tool": "get_resource_status", "arguments": {"resource_id": "tensile-01", "start": "2026-10-15T10:00:00", "end": "2026-10-15T11:00:00"}, "reasoning_summary": "Check resource readiness and availability."},
+    {"kind": "tool_call", "tool": "reserve_resource", "arguments": {"user_id": "alice", "project_id": "polymer-study", "resource_id": "tensile-01", "start": "2026-10-15T10:00:00", "end": "2026-10-15T11:00:00"}, "reasoning_summary": "All required preconditions are satisfied."},
+    {"kind": "final", "response": {"status": "completed", "message": "The reservation was created.", "citations": ["TRN-210#tensile-tester"], "completed_actions": ["reserve_resource"]}}
+  ],
+  "missing_laser_training": [
+    {"kind": "tool_call", "tool": "search_lab_documents", "arguments": {"query": "laser cutter laser_safety qualification", "top_k": 5}, "reasoning_summary": "Retrieve the training policy."},
+    {"kind": "tool_call", "tool": "get_user_authorizations", "arguments": {"user_id": "bob"}, "reasoning_summary": "Check the user's qualifications."},
+    {"kind": "tool_call", "tool": "get_resource_status", "arguments": {"resource_id": "laser-01", "start": "2026-10-15T10:00:00", "end": "2026-10-15T11:00:00"}, "reasoning_summary": "Check resource readiness."},
+    {"kind": "final", "response": {"status": "blocked", "message": "Bob does not have the required laser_safety qualification.", "citations": ["TRN-210#laser-cutter"], "completed_actions": []}}
+  ],
+  "expired_robot_calibration": [
+    {"kind": "tool_call", "tool": "search_lab_documents", "arguments": {"query": "current calibration maintenance reservation", "top_k": 5}, "reasoning_summary": "Retrieve the calibration policy."},
+    {"kind": "tool_call", "tool": "get_user_authorizations", "arguments": {"user_id": "carol"}, "reasoning_summary": "Check the user's qualifications."},
+    {"kind": "tool_call", "tool": "get_resource_status", "arguments": {"resource_id": "robot-01", "start": "2026-10-15T10:00:00", "end": "2026-10-15T11:00:00"}, "reasoning_summary": "Check calibration and maintenance."},
+    {"kind": "final", "response": {"status": "blocked", "message": "The robotic cell's calibration is not current.", "citations": ["CAL-310#calibration"], "completed_actions": []}}
+  ],
+  "after_hours_missing": [
+    {"kind": "tool_call", "tool": "search_lab_documents", "arguments": {"query": "after_hours approval before 08:00 after 18:00", "top_k": 5}, "reasoning_summary": "Retrieve the after-hours policy."},
+    {"kind": "tool_call", "tool": "get_user_authorizations", "arguments": {"user_id": "bob"}, "reasoning_summary": "Check after-hours approval."},
+    {"kind": "tool_call", "tool": "get_resource_status", "arguments": {"resource_id": "tensile-01", "start": "2026-10-15T19:00:00", "end": "2026-10-15T20:00:00"}, "reasoning_summary": "Check resource readiness."},
+    {"kind": "final", "response": {"status": "blocked", "message": "The requested time requires after-hours approval.", "citations": ["AFT-130#after-hours"], "completed_actions": []}}
+  ],
+  "ambiguous_time": [
+    {"kind": "clarification", "question": "What exact start and end times should I use?", "missing_fields": ["start", "end"]}
+  ],
+  "conflict": [
+    {"kind": "tool_call", "tool": "search_lab_documents", "arguments": {"query": "reservation resource availability calibration", "top_k": 5}, "reasoning_summary": "Retrieve reservation policy."},
+    {"kind": "tool_call", "tool": "get_user_authorizations", "arguments": {"user_id": "alice"}, "reasoning_summary": "Check qualifications and project authorization."},
+    {"kind": "tool_call", "tool": "get_resource_status", "arguments": {"resource_id": "tensile-01", "start": "2026-10-15T13:30:00", "end": "2026-10-15T14:30:00"}, "reasoning_summary": "Check resource availability."},
+    {"kind": "final", "response": {"status": "blocked", "message": "The resource is unavailable during the requested interval.", "citations": ["CAL-310#calibration"], "completed_actions": []}}
+  ]
+}
