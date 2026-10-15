@@ -2,7 +2,7 @@
 
 ## Overview
 
-In this project, you will implement and evaluate a typed, tool-using agent ic application for a fictional shared engineering laboratory. 
+In this project, you will implement and evaluate a typed, tool-using agentic application for a fictional shared engineering laboratory. 
 The application receives requests such as:
 
  *Reserve the tensile tester for my project tomorrow afternoon.*
@@ -88,7 +88,7 @@ You will complete TODOs in exactly four modules:
 - `agent.py`
 - `validation.py`
 
-You will also add tests and submit an evaluation report. See `GETTING_STARTED.md` for the exact order and commands, and `ARCHITECTURE.md` for the module and data-flow map.
+You will also add tests and submit an evaluation report. See `IMPLEMENTATION_STEPS.md` for the exact order and commands, and `ARCHITECTURE.md` for the module and data-flow map.
 
 ## Required Decisions
 
@@ -100,7 +100,7 @@ At each step, the model returns one of three typed decisions:
     continue
 3. `FinalDecision`: return a typed final response
 
-In case 1), you application should first validate the tool call 
+In case 1), your application should first validate the tool call 
 decision, and only execute it if all safety checks pass.
 
 
@@ -178,7 +178,7 @@ The `data/public_scenarios.json` file contains examples from six different categ
 5. ambiguous request requiring clarification
 6. scheduling conflict or tool failure
 
-The instructors will evaluate your application on an additional set of "held out" test. The held-out tests may check additional scenarios, including:
+The instructors will evaluate your application on an additional set of "held out" tests. The held-out tests may check additional scenarios, including:
 
 - identity, project, resource, or interval substitution
 - malformed model decisions
@@ -194,22 +194,30 @@ The instructors will evaluate your application on an additional set of "held out
 We recommend you approach this project as a set of steps. Each of these is
 detailed in the IMPLEMENTATION_STEPS.md 
 
-Step 0: Initial setup 
-Step 1: Typed decisions and prompts
-Step 2: Executable agent loop
-Step 3: Validation and evaluation
+- Step 0: Initial setup
+- Step 1: Typed decisions and prompts
+- Step 2: Executable agent loop
+- Step 3: Validators and evaluation
+- Step 4: Your own tests
+- Step 5: Public benchmark
+- Step 6: Data flow diagram
+- Step 7: Final report
 
 ## Required Deliverables
 
 Submit:
 
-1. completed source code including implementations and tests (see Steps 1 through 4 of the IMPLEMENTATION_NOTES.md)
+1. completed source code including implementations and tests (see Steps 1 through 4 of the IMPLEMENTATION_STEPS.md)
   - Submit a GitHub repository URL shared privately with TAs/Instructors or set to Public. (Share your repo with these GitHub ids: joestubbs, ajamthetacc, waltermoreira, )
   - The code should also be on your student VM. 
-2. the generated public_benchmark.json artifact and a summary 
-   of its results in the evaluation report
-3. a small data flow diagram illustrating the execution/flow for a single scenario.
-4. a short report analyzing your system  (no more than 2 pages)
+2. the generated `public_benchmark.json` artifact, plus a summary 
+   of its results in Section 2 of your final report (Step 5)
+3. a small data flow diagram illustrating the execution/flow for a single scenario. Either put it on its own page at
+   the end of your report, or commit it to your repository as a separate file (for example, `data_flow_diagram.png`).
+   It does not count toward the 2-page limit.
+4. a short report analyzing your system, submitted as a PDF. **The report is strictly limited to 2 pages**
+   (11 pt font, 1 in margins, US Letter), not counting the data flow diagram page if you put it at the end. Any other content beyond page 2 is not graded.
+   Start from the template in [`report_template/`](report_template/). See Step 7 of IMPLEMENTATION_STEPS.md for the full formatting rules.
 
 
 
@@ -241,6 +249,6 @@ in the course syllabus. Do not modify the simulator.
 
 | Part 1: Typed Decisions (agent_models.py) 10 Points Total | Part 2: Prompting & Trust Boundary (prompts.py) 10 Points Total | Part 3: Agent Loop, State & Termination (agent.py) 30 points Total | Part 4: System Validation Logic (validation.py) 25 Points Total | Part 5: Student tests and validation (test_student_cases.py) 15 Points Total | Part 6: Architecture Diagram & Final Report 10 Points Total |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1.1 ClarificationDecision Schema (3 pts) | Untrusted Inputs (2.5 pts)<br>Reservation Preconditions (2.5 pts)<br>Citations (2.5 pts)<br>Actions Reporting (2.5 pts) | TODO 2.1, 2.2, 2.3 (2 pts each) | TODO 3.1, 3.2, 3.3 (6 pts each) | Original Student test - Atleast 3 from the mandatory scenarios provided (5 pts each) | The generated `public_benchmark.json` artifact and a summary of its results in the evaluation report (2 pts) |
-| 1.2 FinalDecision Schema (3 pts) | | TODO : 2.4, 2.5, 2.6, 2.7 (6 pts each) | Successful public benchmark run and 100% tests pass and have summary in (public_benchmark.json) (7 pts) | | A small data flow diagram illustrating the execution/flow for a single scenario. (3 pts) <br>A short report analyzing your system (no more than 2 pages) 5 pts |
+| 1.1 ClarificationDecision Schema (3 pts) | Untrusted Inputs (2.5 pts)<br>Reservation Preconditions (2.5 pts)<br>Citations (2.5 pts)<br>Actions Reporting (2.5 pts) | TODO 2.1, 2.2, 2.3 (2 pts each) | TODO 3.1, 3.2, 3.3 (6 pts each) | Original Student test - At least 3 from the mandatory scenarios provided (5 pts each) | The generated `public_benchmark.json` artifact and a summary of its results in the evaluation report (2 pts) |
+| 1.2 FinalDecision Schema (3 pts) | | TODO : 2.4, 2.5, 2.6, 2.7 (6 pts each) | Successful public benchmark run and 100% tests pass and have summary in (public_benchmark.json) (7 pts) | | A small data flow diagram illustrating the execution/flow for a single scenario. (3 pts) <br>A short report analyzing your system (**strict 2-page limit**, using the provided template) 5 pts |
 | 1.3 Discriminated Union via kind (4 pts) | | | | | |

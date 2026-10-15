@@ -1,0 +1,102 @@
+% COE 379L Fall 2026 -- Midterm Project Report Template (LaTeX / Overleaf)
+%
+% Required format -- do NOT change these settings:
+%   US Letter paper, 1 in margins, 11 pt Times body text, single spacing.
+%   Hard limit: 2 pages, not counting the data flow diagram on its own page at the end.
+%   Any other content beyond page 2 will not be graded. Submit the compiled PDF.
+\documentclass[11pt,letterpaper]{article}
+
+% ---------- Page setup (do not modify) ----------
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext}            % Times-compatible body font
+\usepackage[compact]{titlesec}
+\titleformat{\section}{\normalfont\fontsize{12}{14}\bfseries}{\thesection.}{0.5em}{}
+\titlespacing*{\section}{0pt}{8pt}{3pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\cfoot{\footnotesize Page \thepage\ of \pageref{LastPage}}
+\usepackage[font=small,labelfont=bf,skip=3pt]{caption}
+\captionsetup[table]{position=top}
+% ------------------------------------------------
+
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+% Guidance text: replace every \guide{...} with your own writing.
+\newcommand{\guide}[1]{\textcolor{gray}{\itshape[#1]}}
+
+\begin{document}
+
+\begin{center}
+  {\fontsize{14}{16}\selectfont\bfseries COE 379L Midterm Project Report: Atlas Laboratory Agent}\\[2pt]
+  Name: \guide{Your Name} \quad|\quad UT EID: \guide{eid} \quad|\quad
+  Repository: \guide{\texttt{https://github.com/<user>/<repo>}}
+\end{center}
+
+% Delete this box before submitting.
+\noindent\colorbox{yellow!15}{\parbox{\dimexpr\linewidth-2\fboxsep}{\small
+  \textbf{Delete this box before submitting.} Hard limit: 2 pages, not counting the data flow
+  diagram on the last page. Do not change the font, font size (11 pt), margins (1 in), line
+  spacing, or paper size (US Letter). Any other content beyond page 2 will not be graded.
+  Submit as PDF.}}
+
+\section{System Overview}
+\guide{Describe how a request moves through your system: the trusted LabRequest envelope,
+how your prompt separates trusted instructions from untrusted data, the
+decision-action-observation loop and its step limit, where the action gate runs, and how the
+final response is checked against the trace.}
+
+\section{Public Benchmark Results}
+\guide{Report the aggregate statistics from \texttt{public\_benchmark.json}. The table below is
+an optional example: change it as you like, or give the statistics in prose instead.}
+
+\begin{table}[h]
+  \centering\small
+  \caption{Aggregate metrics from \texttt{public\_benchmark.json}.}
+  \begin{tabular}{@{}lr@{\qquad}lr@{}}
+    \toprule
+    Metric & Value & Metric & Value \\
+    \midrule
+    \texttt{scenario\_count}                   & \guide{ } & \texttt{unnecessary\_refusal\_rate} & \guide{ } \\
+    \texttt{success\_rate}                     & \guide{ } & \texttt{clarification\_accuracy}    & \guide{ } \\
+    \texttt{invalid\_structured\_response\_rate} & \guide{ } & \texttt{average\_tool\_calls}     & \guide{ } \\
+    \texttt{unsafe\_action\_attempt\_rate}     & \guide{ } &                                     &           \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\guide{A few sentences. State explicitly whether all six public scenarios pass. Explain any
+failed or unexpected scenario, citing what happened in its trace. Note any near-failures or
+metrics you find notable.}
+
+\section{Student Tests}
+\guide{Describe the tests you wrote in \texttt{tests/test\_student\_cases.py} and explain how
+they help ensure the quality of the system.}
+
+\section{Implementation Decisions}
+\guide{Justify the major choices you made, for example: the error codes and messages your
+validators return, how denied tool calls are recorded and returned to the model, which
+termination reasons you use, and how you handle request fields that are unresolved.}
+
+% ---------- Data flow diagram: own page at the end; not counted toward the 2-page limit ----------
+\clearpage
+\section*{Data Flow Diagram (not counted toward the 2-page limit)}
+\guide{Insert one diagram showing how a single scenario moves through your system (Step 6). It
+must identify the initial request object (including the trusted metadata), model decisions, the
+validation/action gate, tool observations, the trace, and the final response. If you commit the
+diagram to your repository as a separate file instead, delete this page.}
+
+\begin{center}
+  % \includegraphics[width=\linewidth]{dataflow.png}
+  \fbox{\parbox[c][4.5in][c]{0.95\linewidth}{\centering\guide{Insert your data flow diagram here}}}
+\end{center}
+
+\end{document}

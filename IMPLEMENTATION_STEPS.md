@@ -1,4 +1,4 @@
-# Getting Started
+# Implementation Steps
 
 This guide gives you a testable path through the project. We highly recommend you complete the stages in the order 
 described below. Note that you should not try to understand every implementation detail before beginning.
@@ -30,7 +30,7 @@ uv run atlas-demo-tools
 ```
 
 This code executes three tools: `get_user_authorizations`, `get_resource_status`, and `search_lab_documents`, and returns a 
-typed `ToolObservation` object (serialized as a JSON object)for each call.
+typed `ToolObservation` object (serialized as a JSON object) for each call.
 
 Inspect the returned `ToolObservation` objects. In particular, locate `ok`, `data`, `error_code`, and `message`.
 
@@ -99,7 +99,7 @@ Edit `src/atlas_agent/validation.py`. Implement only these three functions:
 2. `validate_reservation_preconditions`
 3. `validate_final_response`
 
-For the last one, `validate_final_response`, here are some details instrucions 
+For the last one, `validate_final_response`, here are some detailed instructions 
 with hints:
 
 3a. Check that every citation in the response.citations was actually retrieved and appears in 
@@ -108,8 +108,8 @@ with hints:
     by successful search_lab_documents calls.
 
 3b. Collect all the names of tools that made a successful mutation into a list.
-    Then check that every object in response.completed_actions that corresponds to a
-    successful mutation.
+    Then check that every entry in response.completed_actions corresponds to one of
+    those successful mutations.
     Hint: a tool call made a successful mutation if event.mutating is True AND event.observation.ok is True
 
 3c. Check that if response.status is "completed" , then the response has at least one 
@@ -157,11 +157,11 @@ uv run pytest
 Once your implementation is completed and your tests are added and passing, execute the benchmark using the 
 following command: 
 
-`` 
+```bash
 uv run atlas-evaluate-scripted > public_benchmark.json
-``
+```
 
-This will produce a file, `public_benchmark.json`, the contains 
+This will produce a file, `public_benchmark.json`, that contains 
 information about the execution, including:
 
 * aggregate metrics
@@ -172,7 +172,8 @@ information about the execution, including:
 * the termination reason
 
 Review the results and write a short, human-readable summary of 
-the evaluation (say, a few sentences). Your summary should 
+the evaluation (say, a few sentences). This summary goes in Section 2 (Public Benchmark Results) of your
+final report (Step 7); it is not a separate document. Your summary should 
 explain any failed or unexpected scenarios. If every public case passes, be sure to state that. You can include additional details such as a discussion of your student-authored tests, near-failures, etc. 
 
 ## Step 6: Create a small data flow diagram 
@@ -188,12 +189,61 @@ graded for conceptual accuracy and clarity, not visual design.
 You may use the diagram in `ARCHITECTURE.md` as a reference, but your diagram
 must specialize the flow to one concrete scenario.
 
+Submit the diagram in one of two ways:
+
+- put it at the end of your report (Step 7), starting on a new page, or
+- commit it to your repository as a separate file, for example `data_flow_diagram.png`, a PDF, or a
+  Markdown file containing a Mermaid diagram.
+
+Either way, the diagram does not count toward the 2-page limit.
+
 ## Step 7: Final report 
 
-Write a short report (max 2 pages) providing an overview of the system and an analysis of its performance 
+> [!IMPORTANT]
+> **The report is limited to 2 pages**, not counting the data flow diagram from Step 6 (on its own page at
+> the end, or as a separate file in your repository). Any other content beyond page 2 will not be read or graded.
+> If your report is too long, cut content; do not shrink the font, margins, or spacing.
+
+Write a short report providing an overview of the system and an analysis of its performance 
 on the public benchmark. Include aggregate statistics and an analysis of success and failure cases. Describe 
-the tests your wrote and an explanation of how they help ensure the quality of the system. 
+the tests you wrote and an explanation of how they help ensure the quality of the system. 
 Justify any other major implementation decisions you made. 
+
+### Use the template
+
+Start from one of the templates in [`report_template/`](report_template/). Both already have the
+required page setup and section structure:
+
+- `report_template.docx` for Microsoft Word or Google Docs (File → Open → Upload)
+- `report_template.tex` for LaTeX or Overleaf
+
+Replace every gray, bracketed guidance text with your own writing, and delete the yellow reminder box.
+
+The table in Section 2 is only an example. You may change it, or present the statistics in prose instead.
+
+### Formatting requirements
+
+| Setting | Requirement |
+|---|---|
+| Page limit | **2 pages**; the data flow diagram does not count (see Step 6) |
+| Paper size | US Letter (8.5 × 11 in) |
+| Margins | 1 in on all sides |
+| Body text | 11 pt; Times New Roman, Arial, or Calibri (the LaTeX template's font is fine) |
+| Line spacing | Single |
+| Section headings | No larger than 14 pt |
+| Tables, figure text, captions | No smaller than 9 pt, and legible when printed |
+| File format | PDF |
+
+### Sections in the template
+
+1. **System Overview**: an overview of how your system works.
+2. **Public Benchmark Results**: aggregate statistics from `public_benchmark.json` and an analysis of
+   success and failure cases (your summary from Step 5).
+3. **Student Tests**: the tests you wrote and how they help ensure the quality of the system.
+4. **Implementation Decisions**: justify your major implementation decisions.
+
+The template's last page is for your **data flow diagram** from Step 6, and it does not count toward the
+2-page limit. If you commit the diagram to your repository as a separate file instead, delete that page.
 
 ## When you are stuck
 
