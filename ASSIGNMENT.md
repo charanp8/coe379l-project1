@@ -228,7 +228,7 @@ in the course syllabus. Do not modify the simulator.
 
 
 ## Grading rubric
-The grading will be weighted as follows: 
+<!-- The grading will be weighted as follows: 
 
 | Component | Weight |
 |---|---:|
@@ -237,4 +237,10 @@ The grading will be weighted as follows:
 | Agent loop, state, and termination | 30% |
 | Three validators | 25% |
 | Student tests and evaluation | 15% |
-| Architecture diagram and report | 10% |
+| Architecture diagram and report | 10% | -->
+
+| Part 1: Typed Decisions (agent_models.py) 10 Points Total | Part 2: Prompting & Trust Boundary (prompts.py) 10 Points Total | Part 3: Agent Loop, State & Termination (agent.py) 30 points Total | Part 4: System Validation Logic (validation.py) points 25 Total | Part 5: Student tests and validation 15 Points Total | Part 6: Architecture Diagram & Final Report 10 Points Total |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 1.1 ClarificationDecision Schema (3 pts) | Untrusted Inputs (2.5 pts)<br>Reservation Preconditions (2.5 pts)<br>Citations (2.5 pts)<br>Actions Reporting (2.5 pts) | TODO 2.1, 2.2, 2.3 (2 pts each) | TODO 3.1, 3.2, 3.3 (6 pts each) | Original Student test - Atleast 3 from the mandatory scenarios provided (5 pts each) | The generated `public_benchmark.json` artifact and a summary of its results in the evaluation report (2 pts) |
+| 1.2 FinalDecision Schema (3 pts) | | TODO : 2.4, 2.5, 2.6, 2.7 (6 pts each) | Successful public benchmark run and 100% tests pass and have summary in (public_benchmark.json) (7 pts) | | A small data flow diagram illustrating the execution/flow for a single scenario. (3 pts) <br>A short report analyzing your system (no more than 2 pages) 5 pts |
+| 1.3 Discriminated Union via kind (4 pts) | | | | | |
