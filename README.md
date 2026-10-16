@@ -12,7 +12,7 @@ The provided modules are unmodified.
 
 ```bash
 uv sync --extra dev
-uv run pytest                                      # 29 tests
+uv run pytest                                      # 27 tests
 uv run atlas-evaluate-scripted > public_benchmark.json
 ```
 

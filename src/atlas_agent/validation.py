@@ -42,8 +42,7 @@ def validate_request_binding(
             continue
         resolved = getattr(request, field)
         if resolved is None:
-            # Guessing a field the envelope never resolved is only unsafe when
-            # the call changes lab state; a read-only check can still explore.
+            # only block a guessed value when the call would change lab state
             if decision.tool in MUTATING_TOOLS:
                 errors.append(f"{field}_unresolved_in_request")
         elif proposed != resolved:
