@@ -7,21 +7,6 @@ from .models import AgentResponse, LabRequest, TraceEvent
 from .policy_context import ReservationContext, build_reservation_context
 from .tools import MUTATING_TOOLS
 
-BOUND_FIELDS = ("project_id", "resource_id", "start", "end")
-
-REQUIRED_FACTS = (
-    ("arguments_complete", "reservation_arguments_incomplete"),
-    ("policy_retrieved", "policy_not_retrieved"),
-    ("authorizations_checked", "authorizations_not_checked"),
-    ("resource_status_checked", "resource_status_not_checked"),
-    ("project_authorized", "project_not_authorized"),
-    ("qualification_current", "required_qualification_missing"),
-    ("resource_available", "resource_not_available"),
-    ("calibration_current", "calibration_not_current"),
-    ("maintenance_clear", "resource_in_maintenance"),
-    ("after_hours_approval_satisfied", "after_hours_approval_missing"),
-)
-
 
 def validate_request_binding(
     decision: ToolCallDecision,
@@ -31,31 +16,74 @@ def validate_request_binding(
     """Reject substitution of the authenticated user or any resolved field."""
     errors: list[str] = []
     arguments = decision.arguments
+    # only block a guessed value when the call would change lab state
+    mutating = decision.tool in MUTATING_TOOLS
 
     proposed_user = arguments.get("user_id")
     if proposed_user is not None and proposed_user != request.authenticated_user_id:
         errors.append("user_id_must_match_authenticated_user")
 
-    for field in BOUND_FIELDS:
-        proposed = arguments.get(field)
-        if proposed is None:
-            continue
-        resolved = getattr(request, field)
-        if resolved is None:
-            # only block a guessed value when the call would change lab state
-            if decision.tool in MUTATING_TOOLS:
-                errors.append(f"{field}_unresolved_in_request")
-        elif proposed != resolved:
-            errors.append(f"{field}_does_not_match_request")
+    proposed_project = arguments.get("project_id")
+    if proposed_project is not None:
+        if request.project_id is None:
+            if mutating:
+                errors.append("project_id_unresolved_in_request")
+        elif proposed_project != request.project_id:
+            errors.append("project_id_does_not_match_request")
+
+    proposed_resource = arguments.get("resource_id")
+    if proposed_resource is not None:
+        if request.resource_id is None:
+            if mutating:
+                errors.append("resource_id_unresolved_in_request")
+        elif proposed_resource != request.resource_id:
+            errors.append("resource_id_does_not_match_request")
+
+    proposed_start = arguments.get("start")
+    if proposed_start is not None:
+        if request.start is None:
+            if mutating:
+                errors.append("start_unresolved_in_request")
+        elif proposed_start != request.start:
+            errors.append("start_does_not_match_request")
+
+    proposed_end = arguments.get("end")
+    if proposed_end is not None:
+        if request.end is None:
+            if mutating:
+                errors.append("end_unresolved_in_request")
+        elif proposed_end != request.end:
+            errors.append("end_does_not_match_request")
 
     return errors
 
 
 def validate_reservation_preconditions(context: ReservationContext) -> list[str]:
     """Return an error for every required context fact that is false."""
-    return [
-        error for fact, error in REQUIRED_FACTS if not getattr(context, fact)
-    ]
+    errors: list[str] = []
+
+    if not context.arguments_complete:
+        errors.append("reservation_arguments_incomplete")
+    if not context.policy_retrieved:
+        errors.append("policy_not_retrieved")
+    if not context.authorizations_checked:
+        errors.append("authorizations_not_checked")
+    if not context.resource_status_checked:
+        errors.append("resource_status_not_checked")
+    if not context.project_authorized:
+        errors.append("project_not_authorized")
+    if not context.qualification_current:
+        errors.append("required_qualification_missing")
+    if not context.resource_available:
+        errors.append("resource_not_available")
+    if not context.calibration_current:
+        errors.append("calibration_not_current")
+    if not context.maintenance_clear:
+        errors.append("resource_in_maintenance")
+    if not context.after_hours_approval_satisfied:
+        errors.append("after_hours_approval_missing")
+
+    return errors
 
 
 def validate_proposed_tool_call(
@@ -92,14 +120,14 @@ def validate_final_response(
     errors: list[str] = []
 
     invented = sorted(set(response.citations) - retrieved_passage_ids(trace))
-    if invented:
-        errors.append("citations_not_retrieved: " + ", ".join(invented))
+    for passage_id in invented:
+        errors.append(f"citations_not_retrieved: {passage_id}")
 
-    succeeded = [
+    succeeded = {
         event.observation.tool
         for event in trace
         if event.mutating and event.observation.ok
-    ]
+    }
     if any(action not in succeeded for action in response.completed_actions):
         errors.append("completed_action_not_in_successful_trace")
 

@@ -2,14 +2,11 @@
 
 from __future__ import annotations
 
+import json
+
 from pydantic import ValidationError
 
-from .agent_models import (
-    ClarificationDecision,
-    DecisionAdapter,
-    FinalDecision,
-    ToolCallDecision,
-)
+from .agent_models import ClarificationDecision, DecisionAdapter, FinalDecision
 from .llm import StructuredLLM
 from .models import AgentResponse, AgentRun, LabRequest, ToolObservation, TraceEvent
 from .prompts import initialize_messages
@@ -46,10 +43,13 @@ def run_agent(
             )
 
         if isinstance(decision, ClarificationDecision):
+            message = decision.question
+            if decision.missing_fields:
+                message += " Missing: " + ", ".join(decision.missing_fields)
             return AgentRun(
                 response=AgentResponse(
                     status="clarification_required",
-                    message=decision.question,
+                    message=message,
                 ),
                 trace=trace,
                 termination_reason="clarification_requested",
@@ -70,11 +70,7 @@ def run_agent(
                 termination_reason="model_finished",
             )
 
-        if not isinstance(decision, ToolCallDecision):
-            return _failed(
-                "Unsupported decision type.", trace, "invalid_model_decision"
-            )
-
+        # DecisionAdapter leaves a tool call as the only remaining variant
         errors = validate_proposed_tool_call(decision, request=request, trace=trace)
         if errors:
             observation = ToolObservation(
@@ -95,8 +91,12 @@ def run_agent(
             )
         )
 
-        messages.append({"role": "assistant", "content": decision.model_dump_json()})
-        messages.append({"role": "tool", "content": observation.model_dump_json()})
+        messages.append(
+            {"role": "assistant", "content": json.dumps(decision.model_dump())}
+        )
+        messages.append(
+            {"role": "tool", "content": json.dumps(observation.model_dump())}
+        )
 
     return _failed(
         "The step budget ran out before the model returned a final response.",

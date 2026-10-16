@@ -156,7 +156,7 @@
               "ok": true,
               "tool": "reserve_resource",
               "data": {
-                "reservation_id": "r-e401504743",
+                "reservation_id": "r-ec6fbb585b",
                 "user_id": "alice",
                 "project_id": "polymer-study",
                 "resource_id": "tensile-01",
@@ -570,7 +570,7 @@
       "run": {
         "response": {
           "status": "clarification_required",
-          "message": "What exact start and end times should I use?",
+          "message": "What exact start and end times should I use? Missing: start, end",
           "citations": [],
           "completed_actions": []
         },
