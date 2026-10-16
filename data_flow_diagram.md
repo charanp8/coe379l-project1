@@ -58,6 +58,8 @@ flowchart TD
     FVAL -->|"consistent"| RESP
     FVAL -.->|"inconsistent -> status=failed,<br/>termination_reason=<br/>inconsistent_final_response"| RESP
 
+    linkStyle default stroke:#475569,color:#1e293b
+
     classDef trusted fill:#dbeafe,stroke:#1e40af,color:#1e293b
     classDef model fill:#fef3c7,stroke:#b45309,color:#1e293b
     classDef gate fill:#fee2e2,stroke:#b91c1c,color:#1e293b
