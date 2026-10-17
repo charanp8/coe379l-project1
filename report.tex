@@ -119,9 +119,8 @@ nothing crashed. With the provided tests the suite is 27 tests and all pass.
 
 \textbf{Error codes.} The validators return a list of short strings, one per failed check, so a
 single denial can report every reason at once and the joined message is easy to search in the
-trace. \texttt{validate\_reservation\_preconditions} tests the context facts in the order they
-are declared on \texttt{ReservationContext}, which keeps the output order predictable and
-testable. Each invented citation gets its own error naming the passage id, so the trace shows
+trace. The precondition validator tests the context facts in the order they are declared on
+\texttt{ReservationContext}, which keeps the output order predictable and testable. Each invented citation gets its own error naming the passage id, so the trace shows
 exactly which one was made up.
 
 \textbf{Unresolved fields.} The mismatch check runs for every tool call, but the ``unresolved in
